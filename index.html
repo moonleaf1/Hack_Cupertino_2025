@@ -2,16 +2,92 @@
 <!-- command shift p, live server-->
 
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>alyssa and ziya is babsolutely better tahn ItsMoonLeafDragon0SmackingtheShrek's Mental Health App</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>It'sMoonDragon0's Accessible Web App</title>
+    <style>
+      body {
+        font-family: Arial, sans-serif;
+        text-align: center;
+        padding: 50px;
+        background: #f5f5f5;
+        color: #222;
+      }
+
+      .page {
+        display: none;
+      }
+
+      .active {
+        display: block;
+      }
+
+      button {
+        padding: 12px 24px;
+        margin: 10px;
+        font-size: 16px;
+        background-color: #007acc;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        cursor: pointer;
+      }
+
+      button:hover {
+        background-color: #005f99;
+      }
+
+      button:focus {
+        outline: 3px solid #ffbf47;
+      }
+
+      h1, p {
+        max-width: 600px;
+        margin: auto;
+      }
+    </style>
   </head>
   <body>
-    <h1>Welcome to My Website!</h1>
-    <p>Click the button below to learn more about me.</p>
 
-    <button onclick="window.open('about.html', '_blank')">
-      Go to About Page
-    </button>
+    <!-- Skip Link for Screen Readers -->
+    <a href="#main-content" class="visually-hidden-focusable">Skip to main content</a>
+
+    <!-- Navigation with accessible ARIA roles -->
+    <nav role="navigation" aria-label="Main navigation">
+      <button onclick="showPage('home')" aria-controls="home" aria-expanded="true" id="home-btn">Home</button>
+      <button onclick="showPage('about')" aria-controls="about" aria-expanded="false" id="about-btn">About</button>
+    </nav>
+
+    <!-- Main content container -->
+    <main id="main-content">
+      <section id="home" class="page active" role="region" aria-labelledby="home-btn">
+        <h1>Welcome to My Accessible Site</h1>
+        <p>This page uses semantic HTML and ARIA roles to help everyone navigate.</p>
+      </section>
+
+      <section id="about" class="page" role="region" aria-labelledby="about-btn">
+        <h1>About Me</h1>
+        <p>I care about making websites that are usable for all—whether you use a mouse, keyboard, screen reader, or sip-and-puff.</p>
+      </section>
+    </main>
+
+    <!-- Script for navigation -->
+    <script>
+      function showPage(pageId) {
+        const pages = document.querySelectorAll('.page');
+        const buttons = document.querySelectorAll('button');
+
+        pages.forEach(page => page.classList.remove('active'));
+        document.getElementById(pageId).classList.add('active');
+
+        buttons.forEach(btn => btn.setAttribute('aria-expanded', 'false'));
+        document.querySelector(`[aria-controls="${pageId}"]`).setAttribute('aria-expanded', 'true');
+        
+        // Move focus to main content when page switches
+        document.getElementById('main-content').focus();
+      }
+    </script>
   </body>
 </html>
