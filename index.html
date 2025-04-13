@@ -3,19 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Home - GrabNGo</title>
     <style>
         .content {
-            position: relative; /* Allows the use of the 'top' property */
-            top: 100px; /* Moves the box 100px lower */
+            margin-top: 0;
+            position: relative;
+            top: 100px; 
             text-align: center;
             padding: 20px; 
             border: 2px solid #31231d;
-            border-radius: 10px; 
+            border-radius: 5px; 
             width: 50%; 
             margin: 0 auto; 
-            background-color: #2a211f;
+            background-color: #31231d;
         }
+
         h1 {
             font-family: 'Quicksand', sans-serif;
             font-size: 3.5em;
@@ -23,7 +25,7 @@
             color: #fdfdfd;
             margin-bottom: 2px;
 
-            padding: 25px 2px;
+            padding: 0px 2px;
             
 
             border: none;
@@ -31,6 +33,26 @@
             margin-left: 10px;
             
         }
+
+        .info-section {
+            margin-top: 235px;
+            padding: 40px 20px;
+            background-color: #1f1512;
+            text-align: center;
+        }
+
+        .info-list {
+            list-style-type: disc;
+            color: white;
+            font-size: 1.2em;
+            font-family: 'Quicksand', sans-serif;
+            text-align: left;
+            max-width: 600px;
+            margin: 0 auto;
+            padding-left: 20px;
+        }
+
+        
 
         p {
             font-family: 'Quicksand', sans-serif;
@@ -54,90 +76,116 @@
     </script>
     
 
-    <div class="content">
-        <h1>GrabNGo</h1>
-        <p>Less waste. Great food. Huge impact.</p>
-    </div>
+    <div class="background-image"></div>
+
+    
 
     <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Scroll Animation</title>
+    <title>GrabNGo</title>
     <style>
         body {
             margin: 0;
+            padding: 0;
             font-family: 'Quicksand', sans-serif;
-            background-color: #b29d88;
+            position: relative;
             overflow-x: hidden;
         }
 
-        .scroll-container {
-            position: relative;
-            height: 100vh;
-            display: flex;
-            align-items: flex-end;
-            justify-content: center;
-            overflow: hidden;
-        }
-
-        .image {
-            position: absolute;
-            top: 20px;
+        .background-image {
+            position: fixed;
+            top: 0;
             left: 0;
             width: 100%;
-            height: 100%;
-            background-image: url('images/basket3.webp'); /* Replace with your image path */
-            background-size: contain;
-            background-repeat: no-repeat;
+            height: 80%; 
+            background-image: url('images/back3.jpg'); 
+            image-rendering:optimizeQuality;
+            background-size: cover;
             background-position: center;
-            transform: scale(0.5); /* Initial scale */
-            transition: transform 1.5s ease-out;
-            z-index: 1;
+            background-repeat: no-repeat;
+            z-index: -2; 
+            opacity: 0.4; 
         }
 
-        .text {
-            position: absolute; /* Allows precise positioning */
-            bottom: 0; /* Align the text box to the bottom of the container */
-            z-index: 2;
-            background-color: rgba(49, 35, 29, 0.8); /* Semi-transparent background */
-            padding: 120px 20px; /* Adjust padding for spacing */
-            text-align: center; /* Center the text inside the box */
-            width: 100%; /* Make the text box span the full width */
-            height: auto; /* Let the height adjust based on content */
-            font-size: 1.8em; /* Slightly increase font size */
+        .content {
+            position: relative;
+            top: 100px;
+            text-align: center;
+            padding: 20px;
+            border: 2px solid #31231d;
+            border-radius: 5px;
+            width: 50%;
+            margin: 0 auto;
+            background-color: #31231d;
+            z-index: 1; 
+        }
+
+        .footer-text {
+            position: fixed; 
+            bottom: -28px; 
+            text-align: center;
+            width: 100%; 
+            background-color: rgba(49, 35, 29, 0.8);
+            padding: 60px ;
+           
+            font-size: 1.8em; 
             font-weight: bold;
-            color: #ffffff;
-            left: 0;
+            color: #ffffff; 
+            z-index: 1; 
         }
 
-        .scroll-container.scrolled .image {
-            transform: scale(0.7); /* Scale the image as you scroll */
+        .info-list {
+            list-style-type: disc;
+            text-align: left;
+            color: white;
+            font-size: 1.1em;
+            font-family: 'Quicksand', sans-serif;
+            max-width: 400px;
+            margin: 20px auto 0;
+            padding-left: 20px;
         }
+
+
+        
+
+        
+
     </style>
 </head>
 <body>
+    <div class="background-image"></div>
 
-<div class="scroll-container" id="scroll-container">
-    <div class="image"></div>
-    <div class="text">With GrabNGo, we are able to significantly decrease food waste and food insecurity.</div>
-</div>
+    <div class="content">
+        <h1>GrabNGo</h1>
+        <p>Less waste. Great food. Huge impact.</p>
+        
+    </div>
+    
+    
+    <div class="info-section">
+        <ul class="info-list">
+            <li>Save surplus meals from local restaurants and stores</li>
+            <li>Provide affordable options to communities in need</li>
+            <li>Join the movement to end food waste</li>
+        </ul>
+    </div>
+    
+    
+    <script>
+        document.getElementById('search-button').addEventListener('click', function () {
+            const query = document.getElementById('search-input').value.trim();
+            if (query) {
+                // Redirect to browse.html with the search query as a URL parameter
+                window.location.href = `browse.html?query=${encodeURIComponent(query)}`;
+            } else {
+                alert('Please enter a search term.');
+            }
+        });
+    </script>
 
-<script>
-    const scrollContainer = document.getElementById('scroll-container');
-
-    window.addEventListener('scroll', () => {
-        const containerPosition = scrollContainer.getBoundingClientRect().top;
-        const windowHeight = window.innerHeight;
-
-        if (containerPosition < windowHeight / 1.5) {
-            scrollContainer.classList.add('scrolled');
-        } else {
-            scrollContainer.classList.remove('scrolled');
-        }
-    });
-</script>
-
+    
 </body>
 </html>

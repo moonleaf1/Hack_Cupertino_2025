@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Browse Deals - GrabNGo</title>
+    <title>Browse Sales - GrabNGo</title>
 
     <!-- Load Leaflet (Free Map) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
@@ -35,7 +35,7 @@
         }
 
         .deal-card {
-            background-color: #f9f9f9;
+            background-color: #f1e6d4;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
             overflow: hidden;
@@ -80,8 +80,8 @@
         }
 
         .add-to-cart-btn {
-            background-color: #4CAF50;
-            color: white;
+            background-color: #533c31;
+            color: #f1e6d4;
             border: none;
             padding: 10px;
             position: absolute;
@@ -107,7 +107,7 @@
             position: fixed;
             bottom: 20px;
             right: 20px;
-            background-color: #4CAF50;
+            background-color: #533c31;
             color: white;
             padding: 10px 20px;
             border-radius: 5px;
@@ -121,7 +121,7 @@
 <div id="header-placeholder"></div>
 
 <div class="content">
-    <h1>Browse Deals</h1>
+    <h1>Browse Sales</h1>
 
     <div class="deals-container" id="deals-container">
         <!-- Deal cards will go here -->
@@ -144,16 +144,18 @@
 
     // Sample deals with IDs
     const deals = [
-        { id: 1, title: "Fresh Apples", store: "Green Market", image: "https://source.unsplash.com/featured/?apples", description: "Freshly picked apples from local farms.", price: "$2.99" },
-        { id: 2, title: "Bakery Bread", store: "Daily Breads", image: "https://source.unsplash.com/featured/?bread", description: "Freshly baked, soft and delicious bread.", price: "$1.50" },
-        { id: 3, title: "Organic Milk", store: "Farm Fresh", image: "https://source.unsplash.com/featured/?milk", description: "Organic milk sourced directly from local farms.", price: "$3.49" },
-        { id: 4, title: "Juicy Strawberries", store: "Berry Good", image: "https://source.unsplash.com/featured/?strawberries", description: "Sweet and juicy strawberries, perfect for snacking.", price: "$5.00" },
-        { id: 5, title: "Homemade Cookies", store: "Sweet Treats", image: "https://source.unsplash.com/featured/?cookies", description: "Delicious homemade cookies, fresh out of the oven.", price: "$3.99" },
-        { id: 6, title: "Cheddar Cheese", store: "Cheesy Delights", image: "https://source.unsplash.com/featured/?cheese", description: "Rich and creamy cheddar cheese, perfect for sandwiches.", price: "$4.49" },
-        { id: 7, title: "Rotisserie Chicken", store: "Roast House", image: "https://source.unsplash.com/featured/?chicken", description: "Juicy rotisserie chicken, fully cooked and ready to eat.", price: "$7.99" },
-        { id: 8, title: "Local Honey", store: "Bee Farm", image: "https://source.unsplash.com/featured/?honey", description: "Sweet and pure honey from local bees.", price: "$6.00" },
-        { id: 9, title: "Ripe Bananas", store: "Fruit Haven", image: "https://source.unsplash.com/featured/?bananas", description: "Ripe, sweet bananas, perfect for smoothies.", price: "$1.99" },
-        { id: 10, title: "Crispy Lettuce", store: "Veggie World", image: "https://source.unsplash.com/featured/?lettuce", description: "Crisp and fresh lettuce, perfect for salads.", price: "$2.49" }
+        { id: 1, title: "Whole Wheat Sour Dough", store: "Tartine Bakery", image: "https://images.squarespace-cdn.com/content/v1/5bf873f9c258b431923392ee/1577820656895-GHHN992DBZBQ9LN4XS5S/Boudin+breads.jpeg", description: "Rustic sourdough with a hearty flavor and a crisp crust.", price: "$4.49" },
+        { id: 2, title: "Green Protein Smoothie", store: "Whole Foods", image: "https://www.farmersguide.co.uk/wp-content/uploads/2023/03/shutterstock_1638551338-1024x768.jpg", description: "Energizing blend of greens, fruits, and protein for a healthy boost.", price: "$3.42" },
+        { id: 3, title: "Pre-Made Deli Wrap", store: "Panera Bread", image: "https://www.brothers-marketplace.com/wp-content/uploads/2022/11/artisan-sandwiches-on-display-cambridge-750x510.jpg", description: "Hand-rolled wrap packed with savory deli meats and crisp veggies.", price: "$5.79" },
+        { id: 4, title: "Fuji Apple", store: "Sprouts", image: "https://dm0qx8t0i9gc9.cloudfront.net/thumbnails/video/48byXia/videoblocks-apple-selection-in-produce-section-of-grocery-store-4k_hfgbso0w1g_thumbnail-1080_08.png", description: "Crisp, juicy, and perfectly sweet for a refreshing snack.", price: "$0.99" },
+        { id: 5, title: "Cookie Assortment", store: "Crumbl", image: "https://www.tastingtable.com/img/gallery/12-crumbl-graveyard-cookies-that-need-to-be-brought-back/l-intro-1726498366.jpg", description: "A decadent variety of soft, gooey, fresh-baked cookies.", price: "$6.99" },
+        { id: 6, title: "Half-Gallon Reduced Fat Milk", store: "Target", image: "https://assets.farmjournal.com/dims4/default/61d2908/2147483647/strip/false/crop/840x600+0+0/resize/840x600!/quality/90/?url=https%3A%2F%2Ffj-corp-pub.s3.us-east-2.amazonaws.com%2Fs3fs-public%2F2022-03%2F2022-03-28T155544Z_232939882_MT1SIPA000ZYJVX8_RTRMADP_3_SIPA-USA.JPG", description: "Smooth and creamy milk, ideal for cereal or coffee.", price: "$4.49" },
+        { id: 7, title: "Dole Banana", store: "Oakmont Market", image: "https://www.producebusiness.com/wp-content/uploads/2024/10/november-bananas-featured.jpg", description: "Naturally sweet bananas, great for on-the-go snacking.", price: "$1.79" },
+        { id: 8, title: "Donut Assortment", store: "Krispy Kreme", image: "https://cdn.britannica.com/38/230838-050-D0173E79/doughnuts-donuts.jpg", description: "Fluffy, melt-in-your-mouth donuts glazed to perfection.", price: "$4.00" },
+        { id: 9, title: "Romaine Lettuce", store: "Walmart", image: "https://kitrusy.com/wp-content/uploads/Promo_Pics/clean-eating-supermarket-fresh-greens-produce-aisle-kitrusy-1024x768.jpg", description: "Fresh, crisp romaine lettuce perfect for salads and wraps.", price: "$1.99" },
+        { id: 10, title: "Pure Unrefined Honey", store: "Trader Joes", image: "https://ashevillebeecharmer.com/wp-content/uploads/honey-stock-availability.jpg", description: "Golden, all-natural honey straight from the hive.", price: "$2.49" },
+        { id: 11, title: "Vanilla Cupcake", store: "Paris Bagette", image: "https://images.stockcake.com/public/4/2/3/42357ec1-f55c-4e68-9efc-219541eb16e6_medium/elegant-bakery-display-stockcake.jpg", description: "Naturally ripened bananas, full of sweet tropical flavor.", price: "$2.99" },
+        { id: 12, title: "Cream Puffs", store: "Beard Papa's", image: "https://www.charlotteobserver.com/latest-news/uee32a/picture271042267/alternates/LANDSCAPE_1140/CAC9CE10-81D3-4307-BD10-AB861D53FE71.jpeg", description: "Light and airy cream puffs filled with rich vanilla custard.", price: "$2.49" }
     ];
 
     // Show deals

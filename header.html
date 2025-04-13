@@ -16,7 +16,7 @@
             display: flex;
             align-items: center;
             justify-content: space-between;
-            color: white;
+            color: #f1e6d4;
         }
         .logo {
             font-size: 35px;
@@ -24,7 +24,7 @@
             font-family: "Tangerine";
         }
         nav a {
-            color: white;
+            color: #f1e6d4;
             text-decoration: none;
             margin: 0 50px;
             font-size: 20px;
@@ -37,61 +37,57 @@
             align-items: center;
             position: relative;
         }
-
         .search-bar input[type="text"] {
             padding: 8px;
             border: none;
             border-radius: 4px;
             margin-left: 20px;
-            width: 300px;
+            width: 300px; 
             font-family: 'Quicksand';
+            background-color: #f1e6d4;
         }
-
         .search-bar button {
             padding: 8px 12px;
-            background-color: rgb(119, 114, 110);
-            color: white;
+            background-color: #a77b69;
+            color: #f1e6d4;
             border: none;
             border-radius: 4px;
             margin-left: 10px;
             cursor: pointer;
             font-family: 'Quicksand';
-            type: button; /* Fix: Make button not submit the form */
         }
-
         .search-bar button:hover {
-            background-color: rgb(88, 85, 82);
+            background-color: #6f5145;
+            color: #f1e6d4;
         }
-
-        .dropdown {
+        #search-results {
             position: absolute;
-            top: 40px;
-            left: 0;
-            width: 100%;
+            top: 45px;
+            left: 20px;
+            width: 300px;
+            background-color: #f1e6d4;
+            border-radius: 4px;
+            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
+            z-index: 100;
+            display: none;
             max-height: 200px;
             overflow-y: auto;
-            background-color: white;
-            border: 1px solid #ccc;
-            border-radius: 4px;
-            display: none;
+            font-family: 'Quicksand';
         }
-
-        .dropdown div {
-            padding: 10px;
+        #search-results div {
+            padding: 8px 12px;
             cursor: pointer;
         }
-
-        .dropdown div:hover {
-            background-color: #f0f0f0;
+        #search-results div:hover {
+            background-color: #ddd;
         }
-
     </style>
 </head>
-<body>
 
+<body>
 <header>
     <div class="logo">
-        <a href="index.html" style="color: white; text-decoration: none;">GrabNGo</a>
+        <a href="index.html" style="color: #f1e6d4; text-decoration: none;">GrabNGo</a>
     </div>
     
     <nav>
@@ -102,63 +98,78 @@
     </nav>
     
     <div class="search-bar">
-        <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterDeals()">
-        <button type="button" onclick="filterDeals()">Search</button> <!-- Button to trigger the search -->
-        <div id="dropdown" class="dropdown"></div>
+        <input type="text" id="search-input" placeholder="Search..." />
+        <button id="search-button">Search</button>
+        <div id="search-results"></div> <!-- dropdown box -->
     </div>
 </header>
 
 <script>
-    // Sample list of deals
-    const deals = [
-        { title: "Fresh Apples", store: "Green Market" },
-        { title: "Bakery Bread", store: "Daily Breads" },
-        { title: "Organic Milk", store: "Farm Fresh" },
-        { title: "Juicy Strawberries", store: "Berry Good" },
-        { title: "Homemade Cookies", store: "Sweet Treats" },
-        { title: "Cheddar Cheese", store: "Cheesy Delights" },
-        { title: "Rotisserie Chicken", store: "Roast House" },
-        { title: "Local Honey", store: "Bee Farm" },
-        { title: "Ripe Bananas", store: "Fruit Haven" },
-        { title: "Crispy Lettuce", store: "Veggie World" }
-    ];
+const deals = [
+    { id: 1, title: "Whole Wheat Sour Dough", store: "Tartine Bakery", image: "", description: "", price: "$4.49" },
+    { id: 2, title: "Green Protein Smoothie", store: "Whole Foods", image: "", description: "", price: "$3.42" },
+    { id: 3, title: "Pre-Made Deli Wrap", store: "Panera Bread", image: "", description: "", price: "$5.79" },
+    { id: 4, title: "Fuji Apple", store: "Sprouts", image: "", description: "", price: "$0.99" },
+    { id: 5, title: "Cookie Assortment", store: "Crumbl", image: "", description: "", price: "$6.99" },
+    { id: 6, title: "Half-Gallon Reduced Fat Milk", store: "Target", image: "", description: "", price: "$4.49" },
+    { id: 7, title: "Dole Banana", store: "Oakmont Market", image: "", description: "", price: "$7.99" },
+    { id: 8, title: "Donut Assortment", store: "Krispy Kreme", image: "", description: "", price: "$6.00" },
+    { id: 9, title: "Romaine Lettuce", store: "Walmart", image: "", description: "", price: "$1.99" },
+    { id: 10, title: "Pure Unrefined Honey", store: "Trader Joes", image: "", description: "", price: "$2.49" },
+    { id: 11, title: "Red Velvet Cupcake", store: "Paris Bagette", image: "", description: "", price: "$1.99" },
+    { id: 12, title: "Cream Puffs", store: "Beard Papa's", image: "", description: "", price: "$2.49" }
+];
 
-    // Function to filter deals based on input
-    function filterDeals() {
-        const searchInput = document.getElementById('searchInput').value.toLowerCase();
-        const dropdown = document.getElementById('dropdown');
+const searchInput = document.getElementById('search-input');
+const searchButton = document.getElementById('search-button');
+const searchResults = document.getElementById('search-results');
 
-        // Filter deals based on the search input
-        const filteredDeals = deals.filter(deal => 
-            deal.title.toLowerCase().includes(searchInput) || 
-            deal.store.toLowerCase().includes(searchInput)
-        );
+// Live search suggestions
+searchInput.addEventListener('input', function() {
+    const query = this.value.trim().toLowerCase();
+    searchResults.innerHTML = '';
 
-        // Display the filtered results in the dropdown
-        dropdown.innerHTML = '';
-        if (filteredDeals.length > 0 && searchInput !== '') {
-            dropdown.style.display = 'block';
+    if (query) {
+        const filteredDeals = deals.filter(deal => deal.title.toLowerCase().includes(query));
+
+        if (filteredDeals.length > 0) {
             filteredDeals.forEach(deal => {
-                const div = document.createElement('div');
-                div.textContent = `${deal.title} - ${deal.store}`;
-                div.onclick = function() {
-                    window.location.href = `dealDetails.html?id=${deal.title}`; // Redirect to the deal page
-                    dropdown.style.display = 'none'; // Hide dropdown after selection
-                };
-                dropdown.appendChild(div);
-            });
-        } else {
-            dropdown.style.display = 'none';
-        }
-    }
+                const resultItem = document.createElement('div');
+                resultItem.textContent = deal.title;
+                
+                resultItem.addEventListener('click', function() {
+                    searchInput.value = deal.title;
+                    searchResults.style.display = 'none';
+                    searchButton.click(); // simulate clicking "Search"
+                });
 
-    // Close the dropdown when clicking outside of it
-    document.addEventListener('click', function(event) {
-        const dropdown = document.getElementById('dropdown');
-        if (!event.target.closest('.search-bar')) {
-            dropdown.style.display = 'none';
+                searchResults.appendChild(resultItem);
+            });
+            searchResults.style.display = 'block';
+        } else {
+            searchResults.style.display = 'none';
         }
-    });
+    } else {
+        searchResults.style.display = 'none';
+    }
+});
+
+// Search button clicked
+searchButton.addEventListener('click', function () {
+    const query = searchInput.value.trim();
+    if (query) {
+        alert(`You searched for: ${query}`);
+    } else {
+        alert('Please enter a search term.');
+    }
+});
+
+// Hide search results when clicking outside
+document.addEventListener('click', function(e) {
+    if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
+        searchResults.style.display = 'none';
+    }
+});
 </script>
 
 </body>
