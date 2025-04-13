@@ -1,45 +1,142 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8" />
     <title>Our Cause - GrabNGo</title>
-    <div id="header-placeholder"></div>
-    
     <link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Tangerine&display=swap" rel="stylesheet">
     <style>
         body, html {
             margin: 0;
             padding: 0;
             font-family: 'Quicksand', sans-serif; 
+            background-color: #b89c8c;
+            color: #222;
         }
+
         .content {
             padding: 20px;
+            max-width: none;
+            margin: 0;
+            text-align: left;
         }
+
         #header-placeholder {
             margin: 0;
             padding: 0;
         }
-        h1, p {
-            margin: 0;
-        }
-        h1, p {
-        margin: 0;
-        }
+
         h1 {
-        margin-bottom: 16px;
+            margin: 0 0 24px 0;
+            font-size: 32px;
         }
 
+        .box {
+            background-color: #f1e6d4; /* Cream-colored background */
+            border-radius: 15px; /* Rounded corners */
+            padding: 20px;
+            margin-bottom: 36px;
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start; /* Prevent overlap by making sure text fits in */
+        }
+
+        .bullet-group {
+            display: flex;
+            align-items: stretch; /* Ensures the image and text both take full height */
+            margin-bottom: 20px; /* Space between groups */
+        }
+
+        .bullet-group img {
+            width: 100%;
+            object-fit: cover; /* Ensure image maintains aspect ratio */
+            border-radius: 12px;
+            flex: 1; /* Ensures image takes up equal space as text */
+            max-height: 300px; /* Limit the height to 300px */
+            margin-right: 20px;
+        }
+
+        .bullet-group.reverse {
+            flex-direction: row-reverse;
+        }
+
+        .bullet-group.reverse img {
+            margin-right: 0;
+            margin-left: 20px;
+        }
+
+        .text-group {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            flex-grow: 1;
+            height: 100%; /* Ensure the text box takes full height */
+        }
+
+        .text-group p {
+            margin: 0 0 12px 0;
+            font-size: 18px;
+            line-height: 1.6;
+            text-align: left;
+        }
+
+        @media (max-width: 600px) {
+            .bullet-group,
+            .bullet-group.reverse {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .bullet-group img,
+            .bullet-group.reverse img {
+                margin: 0 0 16px 0;
+            }
+        }
     </style>
 </head>
 <body>
 
 <div id="header-placeholder"></div>
 
-
 <div class="content">
     <h1>Fighting Food Waste: Less waste. Great food. Huge impact.</h1>
-    <p>Every year, billions of pounds of perfectly good food are thrown away, while families across the country go hungry. In fact, nearly 40% of food in the U.S. is wasted, even as 1 in 5 children face food insecurity. That waste doesn’t just hurt people — it hurts the planet. When food ends up in landfills, it releases methane, a powerful greenhouse gas that accelerates climate change.</p>
-    <p>At GrabNGo, we believe there is a better way. By connecting people to discounted surplus food from local stores and restaurants, we are cutting down waste and making meals more affordable. Our platform helps communities save money, reduce environmental harm, and support a more sustainable food system. Food should nourish people, not landfills. Together, we can change the system, one bite at a time.</p>
+
+    <!-- First image and bullets with box only around text -->
+    <div class="bullet-group">
+        <img src="https://eu-images.contentstack.com/v3/assets/blt4a147f9e36f0754a/bltca1024047d1f4088/652008b0aebaed5f2766db0e/landfill_0.jpg" alt="Food waste image">
+        <div class="text-group box"> <!-- Box around only the text -->
+            <p>• Every year, billions of pounds of perfectly good food are thrown away, even while families go hungry.</p>
+            <p>• Nearly 40% of food in the U.S. is wasted — enough to feed millions of people in need.</p>
+            <p>• Wasted food releases methane in landfills, a greenhouse gas 25x more potent than carbon dioxide.</p>
+            <p>• In the U.S., more than 130 billion pounds of food is wasted annually, with over $160 billion lost.</p>
+            <p>• GrabNGo connects people to discounted surplus meals from local restaurants and stores.</p>
+            <p>• By rescuing surplus food, GrabNGo helps decrease food waste and its environmental impact.</p> <!-- New bullet -->
+        </div>
+    </div>
+
+    <!-- Second image and bullets with box only around text -->
+    <div class="bullet-group reverse">
+        <img src="https://www.restaurantware.com/cdn/shop/articles/Blog-Main-what-type-of-bakery-should-you-open.png?v=1706074996" alt="Bakery image">
+        <div class="text-group box"> <!-- Box around only the text -->
+            <p>• Food should nourish people — not landfills. Together, we can change the system, one bite at a time.</p>
+            <p>• By rescuing surplus food, GrabNGo reduces unnecessary waste, preventing it from ending up in landfills.</p>
+            <p>• We help local businesses reduce food waste by offering an easy and efficient way to redistribute excess food.</p>
+            <p>• GrabNGo helps bridge the gap between those who have food to spare and those who need it most.</p>
+            <p>• We make food more affordable, reduce environmental harm, and build stronger, more resilient communities.</p>
+            <p>• Our platform offers an easy way for consumers to contribute to a more sustainable food system.</p> <!-- New bullet -->
+        </div>
+    </div>
+
+    <!-- Third image and bullets with box only around text -->
+    <div class="bullet-group">
+        <img src="https://img.freepik.com/premium-photo/midsection-man-preparing-food-kitchen_1048944-11771451.jpg?semt=ais_hybrid&w=740" alt="Food waste reduction image">
+        <div class="text-group box"> <!-- Box around only the text -->
+            <p>• We promote food sustainability by encouraging businesses to reallocate unused food instead of throwing it away.</p>
+            <p>• GrabNGo’s mission is to support a circular economy, where food waste is minimized, and resources are maximized.</p>
+            <p>• By providing an accessible platform for surplus food, GrabNGo is helping to reduce global food insecurity.</p>
+            <p>• Our work is focused on creating lasting social and environmental change, one meal at a time.</p>
+            <p>• We partner with businesses to create a more sustainable food system through waste reduction.</p> <!-- New bullet -->
+        </div>
+    </div>
 
 </div>
 
@@ -51,8 +148,5 @@
       });
 </script>
 
-
 </body>
 </html>
-
-

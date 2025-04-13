@@ -17,7 +17,6 @@
             align-items: center;
             justify-content: space-between;
             color: white;
-
         }
         .logo {
             font-size: 35px;
@@ -36,16 +35,18 @@
         .search-bar {
             display: flex;
             align-items: center;
+            position: relative;
         }
-        
-      .search-bar input[type="text"] {
+
+        .search-bar input[type="text"] {
             padding: 8px;
             border: none;
             border-radius: 4px;
             margin-left: 20px;
-            width: 300px; /* Added width to make the search bar longer */
+            width: 300px;
             font-family: 'Quicksand';
-      }
+        }
+
         .search-bar button {
             padding: 8px 12px;
             background-color: rgb(119, 114, 110);
@@ -55,12 +56,35 @@
             margin-left: 10px;
             cursor: pointer;
             font-family: 'Quicksand';
-            
+            type: button; /* Fix: Make button not submit the form */
         }
+
         .search-bar button:hover {
             background-color: rgb(88, 85, 82);
-            font-family: 'Quicksand';
         }
+
+        .dropdown {
+            position: absolute;
+            top: 40px;
+            left: 0;
+            width: 100%;
+            max-height: 200px;
+            overflow-y: auto;
+            background-color: white;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            display: none;
+        }
+
+        .dropdown div {
+            padding: 10px;
+            cursor: pointer;
+        }
+
+        .dropdown div:hover {
+            background-color: #f0f0f0;
+        }
+
     </style>
 </head>
 <body>
@@ -78,10 +102,64 @@
     </nav>
     
     <div class="search-bar">
-        <input type="text" placeholder="Search...">
-        <button type="submit">Search</button>
+        <input type="text" id="searchInput" placeholder="Search..." onkeyup="filterDeals()">
+        <button type="button" onclick="filterDeals()">Search</button> <!-- Button to trigger the search -->
+        <div id="dropdown" class="dropdown"></div>
     </div>
 </header>
+
+<script>
+    // Sample list of deals
+    const deals = [
+        { title: "Fresh Apples", store: "Green Market" },
+        { title: "Bakery Bread", store: "Daily Breads" },
+        { title: "Organic Milk", store: "Farm Fresh" },
+        { title: "Juicy Strawberries", store: "Berry Good" },
+        { title: "Homemade Cookies", store: "Sweet Treats" },
+        { title: "Cheddar Cheese", store: "Cheesy Delights" },
+        { title: "Rotisserie Chicken", store: "Roast House" },
+        { title: "Local Honey", store: "Bee Farm" },
+        { title: "Ripe Bananas", store: "Fruit Haven" },
+        { title: "Crispy Lettuce", store: "Veggie World" }
+    ];
+
+    // Function to filter deals based on input
+    function filterDeals() {
+        const searchInput = document.getElementById('searchInput').value.toLowerCase();
+        const dropdown = document.getElementById('dropdown');
+
+        // Filter deals based on the search input
+        const filteredDeals = deals.filter(deal => 
+            deal.title.toLowerCase().includes(searchInput) || 
+            deal.store.toLowerCase().includes(searchInput)
+        );
+
+        // Display the filtered results in the dropdown
+        dropdown.innerHTML = '';
+        if (filteredDeals.length > 0 && searchInput !== '') {
+            dropdown.style.display = 'block';
+            filteredDeals.forEach(deal => {
+                const div = document.createElement('div');
+                div.textContent = `${deal.title} - ${deal.store}`;
+                div.onclick = function() {
+                    window.location.href = `dealDetails.html?id=${deal.title}`; // Redirect to the deal page
+                    dropdown.style.display = 'none'; // Hide dropdown after selection
+                };
+                dropdown.appendChild(div);
+            });
+        } else {
+            dropdown.style.display = 'none';
+        }
+    }
+
+    // Close the dropdown when clicking outside of it
+    document.addEventListener('click', function(event) {
+        const dropdown = document.getElementById('dropdown');
+        if (!event.target.closest('.search-bar')) {
+            dropdown.style.display = 'none';
+        }
+    });
+</script>
 
 </body>
 </html>

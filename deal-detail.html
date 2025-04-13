@@ -2,11 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Browse Deals - GrabNGo</title>
-
-    <!-- Load Leaflet (Free Map) -->
-    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
-    <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
+    <title>Deal Details - GrabNGo</title>
 
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Tangerine&display=swap" rel="stylesheet">
@@ -27,48 +23,59 @@
             padding: 20px;
         }
 
-        .deals-container {
-            display: grid;
-            grid-template-columns: repeat(4, 1fr);
-            gap: 20px;
-            margin-bottom: 30px;
+        .deal-detail-container {
+            display: flex;
+            justify-content: center;
+            margin-top: 20px;
         }
 
-        .deal-card {
+        .deal-detail-card {
+            width: 60%;
             background-color: #f9f9f9;
+            padding: 20px;
             border-radius: 8px;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-            overflow: hidden;
-            position: relative;
-            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
         }
 
-        .deal-card img {
+        .deal-detail-card img {
             width: 100%;
-            height: 200px; /* Adjusted height for better visual balance */
+            height: 300px;
             object-fit: cover;
-        }
-
-        .deal-info {
-            padding: 15px;
+            border-radius: 8px;
         }
 
         .deal-title {
-            font-size: 18px;
+            font-size: 24px;
             font-weight: bold;
-            margin-bottom: 8px;
+            margin: 15px 0;
         }
 
         .deal-store {
-            font-size: 16px;
+            font-size: 20px;
             color: #555;
-            margin-bottom: 12px;
+            margin-bottom: 20px;
+        }
+
+        .deal-description {
+            font-size: 16px;
+            color: #333;
+            margin-bottom: 20px;
+        }
+
+        .deal-price {
+            font-size: 20px;
+            color: #4CAF50;
+            margin-bottom: 20px;
         }
 
         .quantity-container {
             display: flex;
             align-items: center;
-            margin-bottom: 10px;
+            margin-bottom: 20px;
         }
 
         .quantity-container input {
@@ -83,36 +90,27 @@
             background-color: #4CAF50;
             color: white;
             border: none;
-            padding: 10px;
-            position: absolute;
-            bottom: 10px;
-            right: 10px;
+            padding: 10px 20px;
             cursor: pointer;
             border-radius: 5px;
         }
 
-        .deal-card:hover {
-            transform: scale(1.05);
-            transition: transform 0.3s ease;
+        .add-to-cart-btn:hover {
+            background-color: #45a049;
         }
 
-        #map {
-            height: 400px;
-            margin-top: 30px;
-            border-radius: 8px;
-            overflow: hidden;
-        }
-
-        .added-to-cart-msg {
-            position: fixed;
-            bottom: 20px;
-            right: 20px;
-            background-color: #4CAF50;
+        .back-to-browse-btn {
+            background-color: #007BFF;
             color: white;
+            border: none;
             padding: 10px 20px;
+            cursor: pointer;
             border-radius: 5px;
-            display: none;
-            font-size: 16px;
+            margin-top: 20px;
+        }
+
+        .back-to-browse-btn:hover {
+            background-color: #0056b3;
         }
     </style>
 </head>
@@ -121,18 +119,15 @@
 <div id="header-placeholder"></div>
 
 <div class="content">
-    <h1>Browse Deals</h1>
+    <h1>Deal Details</h1>
 
-    <div class="deals-container" id="deals-container">
-        <!-- Deal cards will go here -->
+    <div class="deal-detail-container" id="deal-detail-container">
+        <!-- Deal detail will go here -->
     </div>
 
-    <h2>Stores Near You</h2>
-    <div id="map"></div>
+    <!-- Back to browse button -->
+    <button class="back-to-browse-btn" onclick="goBackToBrowse()">Back to Browse</button>
 </div>
-
-<!-- Added to cart message -->
-<div class="added-to-cart-msg" id="added-to-cart-msg">Added to cart!</div>
 
 <script>
     // Insert header
@@ -142,7 +137,11 @@
         document.getElementById('header-placeholder').innerHTML = data;
       });
 
-    // Sample deals with IDs
+    // Get deal ID from URL
+    const urlParams = new URLSearchParams(window.location.search);
+    const dealId = parseInt(urlParams.get('id'));
+
+    // Sample deals
     const deals = [
         { id: 1, title: "Fresh Apples", store: "Green Market", image: "https://source.unsplash.com/featured/?apples", description: "Freshly picked apples from local farms.", price: "$2.99" },
         { id: 2, title: "Bakery Bread", store: "Daily Breads", image: "https://source.unsplash.com/featured/?bread", description: "Freshly baked, soft and delicious bread.", price: "$1.50" },
@@ -156,74 +155,47 @@
         { id: 10, title: "Crispy Lettuce", store: "Veggie World", image: "https://source.unsplash.com/featured/?lettuce", description: "Crisp and fresh lettuce, perfect for salads.", price: "$2.49" }
     ];
 
-    // Show deals
-    const container = document.getElementById('deals-container');
+    // Find the selected deal by ID
+    const selectedDeal = deals.find(deal => deal.id === dealId);
 
-    deals.forEach(deal => {
-        const card = document.createElement('div');
-        card.className = 'deal-card';
-        
-        // Add click event to go to the deal page
-        card.addEventListener('click', function(event) {
-            // If the click is not on the quantity input or "Add to Cart" button, navigate to the deal page
-            if (!event.target.closest('.quantity-container')) {
-                window.location.href = `deal-detail.html?id=${deal.id}`;
-            }
-        });
+    // Display the deal details
+    const container = document.getElementById('deal-detail-container');
+    if (selectedDeal) {
+        const detailCard = document.createElement('div');
+        detailCard.className = 'deal-detail-card';
 
-        card.innerHTML = `
-            <img src="${deal.image}" alt="${deal.title}">
-            <div class="deal-info">
-                <div class="deal-title">${deal.title}</div>
-                <div class="deal-store">${deal.store}</div>
-                <div class="deal-price">${deal.price}</div>
-                <div class="quantity-container">
-                    <input type="number" id="quantity-${deal.id}" min="1" value="1">
-                    <button class="add-to-cart-btn" onclick="addToCart(${deal.id}, event)">Add to Cart</button>
-                </div>
+        detailCard.innerHTML = `
+            <img src="${selectedDeal.image}" alt="${selectedDeal.title}">
+            <div class="deal-title">${selectedDeal.title}</div>
+            <div class="deal-store">${selectedDeal.store}</div>
+            <div class="deal-description">${selectedDeal.description}</div>
+            <div class="deal-price">${selectedDeal.price}</div>
+            <div class="quantity-container">
+                <input type="number" id="quantity-${selectedDeal.id}" min="1" value="1">
             </div>
+            <button class="add-to-cart-btn" onclick="addToCart(${selectedDeal.id})">Add to Cart</button>
         `;
 
-        container.appendChild(card);
-    });
+        container.appendChild(detailCard);
+    } else {
+        container.innerHTML = "<p>Deal not found.</p>";
+    }
 
     // Add to cart function
-    function addToCart(id, event) {
-        event.stopPropagation(); // Prevent going to deal page when clicking the "Add to Cart" button
+    function addToCart(id) {
         const quantity = document.getElementById(`quantity-${id}`).value;
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const deal = deals.find(d => d.id === id);
         deal.quantity = quantity; // Store quantity
         cart.push(deal);
         localStorage.setItem('cart', JSON.stringify(cart));
-
-        // Show "Added to Cart" message
-        const msg = document.getElementById('added-to-cart-msg');
-        msg.style.display = 'block';
-        setTimeout(() => {
-            msg.style.display = 'none';
-        }, 2000); // Hide after 2 seconds
+        alert(`${deal.title} x${quantity} added to cart!`);
     }
 
-    // Leaflet Map
-    var map = L.map('map').setView([37.7749, -122.4194], 13); // Centered San Francisco
-
-    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
-        attribution: 'Map data © OpenStreetMap contributors'
-    }).addTo(map);
-
-    // Example store markers
-    const stores = [
-        {name: "Green Market", lat: 37.7749, lng: -122.4194},
-        {name: "Daily Breads", lat: 37.7849, lng: -122.4094},
-        {name: "Farm Fresh", lat: 37.7649, lng: -122.4294},
-    ];
-
-    stores.forEach(store => {
-        L.marker([store.lat, store.lng])
-            .addTo(map)
-            .bindPopup(store.name);
-    });
+    // Go back to browse section
+    function goBackToBrowse() {
+        window.location.href = 'browse.html'; // Update this to the URL of your browse section
+    }
 </script>
 
 </body>

@@ -8,7 +8,7 @@
         body {
             font-family: 'Quicksand', sans-serif;
             margin: 0;
-            padding: 0px;
+            padding: 0;
             background-color: #f8f4f2;
         }
         .cart-item {
@@ -19,9 +19,52 @@
             padding: 20px;
             width: 80%;
             box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .cart-item img {
+            width: 120px;
+            height: 120px;
+            object-fit: cover;
+            border-radius: 10px;
+            margin-right: 20px;
+        }
+        .cart-details {
+            flex-grow: 1;
+        }
+        .cart-details h2 {
+            margin: 0 0 10px 0;
+            font-size: 20px;
+        }
+        .cart-details p {
+            margin: 5px 0;
+        }
+        .remove-button {
+            background-color: #ff6666;
+            border: none;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            font-size: 0.9em;
+            cursor: pointer;
+            margin-left: 20px;
+        }
+        .remove-button:hover {
+            background-color: #e65c5c;
+        }
+        .content {
+            padding: 20px;
+        }
+        #header-placeholder {
+            margin: 0;
+            padding: 0;
+        }
+        h1 {
+            margin-bottom: 16px;
         }
         #empty-cart {
-            background-color: #ff7f50;
+            background-color: #ff6666;
             border: none;
             color: white;
             padding: 10px 20px;
@@ -31,59 +74,110 @@
             margin-top: 20px;
         }
         #empty-cart:hover {
-            background-color: #ff6333;
+            background-color: #e65c5c;
+        }
+        #empty-cart:disabled {
+            background-color: #bebdbd;
+            cursor: not-allowed;
+        }
+        .cart-bottom {
+            width: 80%;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: 30px;
+        }
+        .total {
+            font-size: 1.5em;
+            font-weight: bold;
+            color: #333;
         }
     </style>
 </head>
 <body>
-    <div id="header-placeholder"></div>
-    
-    <script>
-        fetch('header.html')
-          .then(response => response.text())
-          .then(data => {
-            document.getElementById('header-placeholder').innerHTML = data;
-          });
-    </script>
 
-<h1>Your Cart</h1>
-
-<div id="cart-items"></div>
-
-<button id="empty-cart" onclick="clearCart()">Empty Cart</button>
+<div id="header-placeholder"></div>
 
 <script>
-function displayCart() {
-    let cart = JSON.parse(localStorage.getItem('cart')) || [];
-    let cartItemsDiv = document.getElementById('cart-items');
+    // Insert header
+    fetch('header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+      });
+</script>
 
-    if (cart.length === 0) {
-        cartItemsDiv.innerHTML = "<p>Your cart is empty! Go grab some deals!</p>";
-    } else {
-        cartItemsDiv.innerHTML = "";
+<div class="content">
+    <h1>Your Cart</h1>
 
-        for (let i = 0; i < cart.length; i++) {
-            let item = cart[i];
-            let itemDiv = document.createElement('div');
-            itemDiv.className = "cart-item";
-            itemDiv.innerHTML = `<h2>${item.item}</h2>
-                                 <p>Store: ${item.store}</p>
-                                 <p>Price: ${item.price}</p>`;
-            cartItemsDiv.appendChild(itemDiv);
+    <div id="cart-items"></div>
+
+    <div class="cart-bottom">
+        <div class="total" id="cart-total"></div>
+        <button id="empty-cart" onclick="emptyCart()" disabled>Empty Cart</button>
+    </div>
+</div>
+
+<script>
+    function loadCart() {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const cartItemsContainer = document.getElementById('cart-items');
+        const cartTotalElement = document.getElementById('cart-total');
+        const emptyCartButton = document.getElementById('empty-cart');
+        cartItemsContainer.innerHTML = '';
+
+        if (cart.length === 0) {
+            cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
+            cartTotalElement.textContent = '';
+            emptyCartButton.disabled = true; // Disable empty cart button if cart is empty
+            return;
+        }
+
+        let total = 0;
+
+        cart.forEach((item, index) => {
+            const itemTotal = parseFloat(item.price.replace('$', '')) * item.quantity;
+            total += itemTotal;
+
+            const itemDiv = document.createElement('div');
+            itemDiv.className = 'cart-item';
+            itemDiv.innerHTML = `
+                <img src="${item.image}" alt="${item.title}">
+                <div class="cart-details">
+                    <h2>${item.title}</h2>
+                    <p>Store: ${item.store}</p>
+                    <p>Price: ${item.price}</p>
+                    <p>Quantity: ${item.quantity}</p>
+                    <p>Item Total: $${itemTotal.toFixed(2)}</p>
+                </div>
+                <button class="remove-button" onclick="removeFromCart(${index})">Remove</button>
+            `;
+
+            cartItemsContainer.appendChild(itemDiv);
+        });
+
+        cartTotalElement.textContent = `Total: $${total.toFixed(2)}`;
+        emptyCartButton.disabled = false; // Enable empty cart button if cart is not empty
+    }
+
+    function removeFromCart(index) {
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        cart.splice(index, 1);
+        localStorage.setItem('cart', JSON.stringify(cart));
+        loadCart();
+    }
+
+    function emptyCart() {
+        if (confirm('Are you sure you want to empty your cart?')) {
+            localStorage.removeItem('cart');
+            loadCart();
         }
     }
-}
 
-function clearCart() {
-    localStorage.removeItem('cart');
-    displayCart();
-}
-
-// When page loads
-displayCart();
+    // Load cart when page is ready
+    document.addEventListener('DOMContentLoaded', loadCart);
 </script>
 
 </body>
 </html>
-
-
