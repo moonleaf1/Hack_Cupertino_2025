@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Our Cause - GrabNGo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Tangerine&display=swap" rel="stylesheet">
+    <style>
+        body, html {
+            margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif; 
+            background-color: #b89c8c;
+            color: #222;
+        }
+
+        .content {
+            padding: 20px;
+            max-width: none;
+            margin: 0;
+            text-align: left;
+        }
+
+       
+        h1 {
+            margin: 0 0 24px 0;
+            font-size: 32px;
+        }
+
+        
+
+        
+       
+    </style>
+</head>
+<body>
+
+<div id="header-placeholder"></div>
+
+<div class="content">
+    <h1>Your Impact</h1>
+    <p>By purchasing $___ worth of food, you have successfully saved ___ MJ of energy.</p>
+    
+
+    
+
+</div>
+
+<script>
+    fetch('header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+      });
+</script>
+
+</body>
+</html>

@@ -27,6 +27,26 @@
             padding: 20px;
         }
 
+        .top-bar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+
+        .top-bar h1 {
+            margin: 0;
+            font-size: 32px;
+        }
+
+        #search-bar {
+            padding: 10px;
+            width: 300px;
+            font-size: 16px;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
         .deals-container {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -137,8 +157,13 @@
 <div id="header-placeholder"></div>
 
 <div class="content">
-    <h1>Browse Sales</h1>
-
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px;">
+        <h1 style="margin: 0;">Browse Sales</h1>
+        <div style="display: flex; align-items: center;">
+            <input type="text" id="search-bar" placeholder="Search deals..." style="padding: 10px; font-size: 16px; border-radius: 5px 0 0 5px; border: 1px solid #ccc; width: 250px;">
+            <button id="search-button" style="padding: 10px 20px; font-size: 16px; border-radius: 0 5px 5px 0; border: 1px solid #ccc; background-color: #533c31; color: white; cursor: pointer;">Search</button>
+        </div>
+    </div>
     <div class="deals-container" id="deals-container">
         <!-- Deal cards will go here -->
     </div>
@@ -207,6 +232,20 @@
 
         container.appendChild(card);
     });
+
+    // Filter deals based on search input
+    document.getElementById('search-bar').addEventListener('input', function () {
+        const searchTerm = this.value.toLowerCase();
+        const dealCards = document.querySelectorAll('.deal-card');
+
+        dealCards.forEach(card => {
+            const title = card.querySelector('.deal-title').textContent.toLowerCase();
+            const store = card.querySelector('.deal-store').textContent.toLowerCase();
+            const matches = title.includes(searchTerm) || store.includes(searchTerm);
+            card.style.display = matches ? 'block' : 'none';
+        });
+    });
+
 
     // Add to cart function
     function addToCart(id, event) {

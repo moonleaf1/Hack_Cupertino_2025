@@ -32,55 +32,6 @@
         nav a:hover {
             text-decoration: underline;
         }
-        .search-bar {
-            display: flex;
-            align-items: center;
-            position: relative;
-        }
-        .search-bar input[type="text"] {
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            margin-left: 20px;
-            width: 300px; 
-            font-family: 'Quicksand';
-            background-color: #f1e6d4;
-        }
-        .search-bar button {
-            padding: 8px 12px;
-            background-color: #a77b69;
-            color: #f1e6d4;
-            border: none;
-            border-radius: 4px;
-            margin-left: 10px;
-            cursor: pointer;
-            font-family: 'Quicksand';
-        }
-        .search-bar button:hover {
-            background-color: #6f5145;
-            color: #f1e6d4;
-        }
-        #search-results {
-            position: absolute;
-            top: 45px;
-            left: 20px;
-            width: 300px;
-            background-color: #f1e6d4;
-            border-radius: 4px;
-            box-shadow: 0px 4px 8px rgba(0,0,0,0.2);
-            z-index: 100;
-            display: none;
-            max-height: 200px;
-            overflow-y: auto;
-            font-family: 'Quicksand';
-        }
-        #search-results div {
-            padding: 8px 12px;
-            cursor: pointer;
-        }
-        #search-results div:hover {
-            background-color: #ddd;
-        }
     </style>
 </head>
 
@@ -94,108 +45,40 @@
         <a href="browse.html">Browse</a>
         <a href="ourCause.html">Our Cause</a>
         <a href="aboutUs.html">About Us</a>
-        <a href="cart.html">Your Cart</a>
+        <a href="cart.html">Cart</a>
+        <a href="stats.html">Your Stats</a>
     </nav>
-    
-    <div class="search-bar">
-        <input type="text" id="search-input" placeholder="Search..." />
-        <button id="search-button">Search</button>
-        <div id="search-results"></div>
-    </div>
+
+    <img src="https://www.shutterstock.com/image-vector/dog-drawing-design-vector-illustration-600nw-2515566401.jpg" alt="Logo" style="height: 50px;">
+
 </header>
 
 <script>
     const deals = [
-        { id: 1, title: "Whole Wheat Sour Dough", store: "Tartine Bakery", image: "", description: "", price: "$4.49" },
-        { id: 2, title: "Green Protein Smoothie", store: "Whole Foods", image: "", description: "", price: "$3.42" },
-        { id: 3, title: "Pre-Made Deli Wrap", store: "Panera Bread", image: "", description: "", price: "$5.79" },
-        { id: 4, title: "Fuji Apple", store: "Sprouts", image: "", description: "", price: "$0.99" },
-        { id: 5, title: "Cookie Assortment", store: "Crumbl", image: "", description: "", price: "$6.99" },
-        { id: 6, title: "Half-Gallon Reduced Fat Milk", store: "Target", image: "", description: "", price: "$4.49" },
-        { id: 7, title: "Dole Banana", store: "Oakmont Market", image: "", description: "", price: "$7.99" },
-        { id: 8, title: "Donut Assortment", store: "Krispy Kreme", image: "", description: "", price: "$6.00" },
-        { id: 9, title: "Romaine Lettuce", store: "Walmart", image: "", description: "", price: "$1.99" },
-        { id: 10, title: "Pure Unrefined Honey", store: "Trader Joes", image: "", description: "", price: "$2.49" },
-        { id: 11, title: "Red Velvet Cupcake", store: "Paris Bagette", image: "", description: "", price: "$1.99" },
-        { id: 12, title: "Cream Puffs", store: "Beard Papa's", image: "", description: "", price: "$2.49" }
+        { id: 1, title: "Whole Wheat Sour Dough", store: "Tartine Bakery", price: "$4.49" },
+        { id: 2, title: "Green Protein Smoothie", store: "Whole Foods", price: "$3.42" },
+        { id: 3, title: "Pre-Made Deli Wrap", store: "Panera Bread", price: "$5.79" },
+        { id: 4, title: "Fuji Apple", store: "Sprouts", price: "$0.99" },
+        { id: 5, title: "Cookie Assortment", store: "Crumbl", price: "$6.99" },
+        { id: 6, title: "Half-Gallon Reduced Fat Milk", store: "Target", price: "$4.49" },
+        { id: 7, title: "Dole Banana", store: "Oakmont Market", price: "$7.99" },
+        { id: 8, title: "Donut Assortment", store: "Krispy Kreme", price: "$6.00" },
+        { id: 9, title: "Romaine Lettuce", store: "Walmart", price: "$1.99" },
+        { id: 10, title: "Pure Unrefined Honey", store: "Trader Joes", price: "$2.49" },
+        { id: 11, title: "Red Velvet Cupcake", store: "Paris Bagette", price: "$1.99" },
+        { id: 12, title: "Cream Puffs", store: "Beard Papa's", price: "$2.49" }
     ];
     
     const searchInput = document.getElementById('search-input');
     const searchButton = document.getElementById('search-button');
     const searchResults = document.getElementById('search-results');
-    
-    // Perform the search by redirecting to the deal details page
-    function performSearch(query) {
-        const matchingDeal = deals.find(deal => deal.title.toLowerCase().includes(query.toLowerCase()));
-    
-        if (matchingDeal) {
-            // Redirect to the matching deal's sales details page
-            window.location.href = `deal-detail.html?id=${matchingDeal.id}`;
-        } else {
-            // No matching deal found
-            alert('No results found for your search.');
-        }
+
+    // Generate the URL for a specific deal
+    function getDealLink(deal) {
+        // You can customize this URL depending on how your deal pages are structured
+        return `deal-detail.html?id=${deal.id}`;
     }
-    
-    // Live search suggestions
-    searchInput.addEventListener('input', function() {
-        const query = this.value.trim().toLowerCase();
-        searchResults.innerHTML = '';
-    
-        if (query) {
-            const filteredDeals = deals.filter(deal => deal.title.toLowerCase().includes(query));
-    
-            if (filteredDeals.length > 0) {
-                filteredDeals.forEach(deal => {
-                    const resultItem = document.createElement('div');
-                    resultItem.textContent = deal.title;
-                    
-                    resultItem.addEventListener('click', function() {
-                        searchInput.value = deal.title;
-                        searchResults.style.display = 'none';
-                        searchButton.click(); // Trigger search button click
-                    });
-    
-                    searchResults.appendChild(resultItem);
-                });
-                searchResults.style.display = 'block';
-            } else {
-                searchResults.style.display = 'none';
-            }
-        } else {
-            searchResults.style.display = 'none';
-        }
-    });
-    
-    // Handle search button click
-    searchButton.addEventListener('click', function () {
-        const query = searchInput.value.trim();
-        if (query) {
-            performSearch(query);
-        } else {
-            alert('Please enter a search term.');
-        }
-    });
-    
-    // Handle "Enter" key press in the search bar
-    searchInput.addEventListener('keydown', function (event) {
-        if (event.key === 'Enter') {
-            event.preventDefault(); // Prevent the default form submission behavior
-            const query = searchInput.value.trim();
-            if (query) {
-                performSearch(query);
-            } else {
-                alert('Please enter a search term.');
-            }
-        }
-    });
-    
-    // Hide search results when clicking outside
-    document.addEventListener('click', function(e) {
-        if (!searchInput.contains(e.target) && !searchResults.contains(e.target)) {
-            searchResults.style.display = 'none';
-        }
-    });
+
 </script>
 
 </body>
