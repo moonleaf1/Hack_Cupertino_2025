@@ -60,6 +60,12 @@
             color: #ffffff;
             margin-top: 0px;
         }
+
+        #header-placeholder * {
+            font-family: 'Quicksand', sans-serif !important;
+            font-style: normal !important;
+        }
+
     </style>
 </head>
 <body>
@@ -142,7 +148,7 @@
         .info-list {
             list-style-type: disc;
             color: white;
-            font-size: 1.5em; /* Increased font size */
+            font-size: 1.5em;
             font-family: 'Quicksand', sans-serif;
             text-align: left;
             max-width: 600px;
@@ -191,7 +197,6 @@
         document.getElementById('search-button').addEventListener('click', function () {
             const query = document.getElementById('search-input').value.trim();
             if (query) {
-                // Redirect to browse.html with the search query as a URL parameter
                 window.location.href = `browse.html?query=${encodeURIComponent(query)}`;
             } else {
                 alert('Please enter a search term.');

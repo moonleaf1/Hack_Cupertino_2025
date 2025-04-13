@@ -107,7 +107,6 @@
 <div id="header-placeholder"></div>
 
 <script>
-    // Insert header
     fetch('header.html')
       .then(response => response.text())
       .then(data => {
@@ -182,7 +181,7 @@
         emptyCartButton.disabled = false;
     }
     function addToCart(id, event) {
-    event.stopPropagation(); // Prevent going to deal page when clicking the "Add to Cart" button
+    event.stopPropagation();
 
     const quantityInput = document.getElementById(`quantity-${id}`);
     const quantity = parseInt(quantityInput.value);
@@ -200,12 +199,10 @@
         return;
     }
 
-    // Check if the item is already in the cart
     const existingItem = cart.find(item => item.id === id);
     if (existingItem) {
-        existingItem.quantity += quantity; // Update quantity
+        existingItem.quantity += quantity;
     } else {
-        // Add new item to the cart
         cart.push({
             id: deal.id,
             title: deal.title,
@@ -219,13 +216,12 @@
 
     localStorage.setItem('cart', JSON.stringify(cart));
 
-    // Show "Added to Cart" message
     const msg = document.getElementById('added-to-cart-msg');
     if (msg) {
         msg.style.display = 'block';
         setTimeout(() => {
             msg.style.display = 'none';
-        }, 2000); // Hide after 2 seconds
+        }, 2000);
     }
 }
     function updateQuantity(index) {

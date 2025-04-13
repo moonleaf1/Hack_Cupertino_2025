@@ -15,21 +15,62 @@
 
         .content {
             padding: 20px;
-            max-width: none;
-            margin: 0;
+            max-width: 900px;
+            margin: 0 auto;
             text-align: left;
         }
 
-       
         h1 {
-            margin: 0 0 24px 0;
-            font-size: 32px;
+            margin-bottom: 16px;
+            text-align: center;
         }
 
-        
+        p {
+            font-size: 18px;
+            line-height: 1.6;
+        }
 
-        
-       
+        .highlight {
+            font-weight: bold;
+            color: #5a3e36;
+        }
+
+        .progress-container {
+            background-color: #e0d0c1;
+            border-radius: 25px;
+            width: 100%;
+            height: 30px;
+            margin: 30px 0;
+            overflow: hidden;
+        }
+
+        .progress-bar {
+            height: 100%;
+            width: 60%;
+            background-color: #7a5c4d;
+            text-align: center;
+            line-height: 30px;
+            color: white;
+            font-weight: bold;
+            transition: width 1s ease-in-out;
+        }
+
+        .mission {
+            margin-top: 40px;
+            font-size: 20px;
+            font-style: italic;
+            text-align: center;
+        }
+
+        .box {
+            background-color: #f1e6d4;
+            border-radius: 15px;
+            padding: 20px;
+            margin: 20px auto;
+            max-width: 1200px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
@@ -38,11 +79,19 @@
 
 <div class="content">
     <h1>Your Impact</h1>
-    <p>By purchasing $___ worth of food, you have successfully saved ___ MJ of energy.</p>
-    
+    <div class="box">
+        <p>By purchasing <span class="highlight">$___</span> worth of food, you have successfully saved <span class="highlight">___ MJ</span> of energy. Every small step you take helps us get closer to a greener future.</p>
 
-    
+        <div class="progress-container">
+            <div class="progress-bar" id="energyProgress">60%</div>
+        </div>
 
+        <p>Together, we have already saved enough energy to power ___ homes for a day! Thank you for being a part of this journey.</p>
+
+        <div class="mission">
+            "GrabNGo is an accessible, affordable, and sustainable way to help individuals obtain low-cost food, for stores to make extra profits, and in turn, heal the Earth."
+        </div>
+    </div>
 </div>
 
 <script>
@@ -51,6 +100,22 @@
       .then(data => {
         document.getElementById('header-placeholder').innerHTML = data;
       });
+
+    function animateProgressBar(targetPercentage) {
+        const progressBar = document.getElementById('energyProgress');
+        let width = 0;
+        const interval = setInterval(() => {
+            if (width >= targetPercentage) {
+                clearInterval(interval);
+            } else {
+                width++;
+                progressBar.style.width = width + '%';
+                progressBar.textContent = width + '%';
+            }
+        }, 20);
+    }
+
+    animateProgressBar(60);
 </script>
 
 </body>

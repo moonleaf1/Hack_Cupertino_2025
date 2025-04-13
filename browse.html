@@ -4,11 +4,9 @@
     <meta charset="UTF-8">
     <title>Browse Sales - GrabNGo</title>
 
-    <!-- Load Leaflet (Free Map) -->
     <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.3/dist/leaflet.css" />
     <script src="https://unpkg.com/leaflet@1.9.3/dist/leaflet.js"></script>
 
-    <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Tangerine&display=swap" rel="stylesheet">
 
     <style>
@@ -65,7 +63,7 @@
 
         .deal-card img {
             width: 100%;
-            height: 200px; /* Adjusted height for better visual balance */
+            height: 200px;
             object-fit: cover;
         }
 
@@ -165,25 +163,21 @@
         </div>
     </div>
     <div class="deals-container" id="deals-container">
-        <!-- Deal cards will go here -->
     </div>
 
     <h2>Stores Near You</h2>
     <div id="map"></div>
 </div>
 
-<!-- Added to cart message -->
 <div class="added-to-cart-msg" id="added-to-cart-msg">Added to cart!</div>
 
 <script>
-    // Insert header
     fetch('header.html')
       .then(response => response.text())
       .then(data => {
         document.getElementById('header-placeholder').innerHTML = data;
       });
 
-    // Sample deals with original price and discount price
     const deals = [
         { id: 1, title: "Whole Wheat Sour Dough", store: "Tartine Bakery", image: "https://images.squarespace-cdn.com/content/v1/5bf873f9c258b431923392ee/1577820656895-GHHN992DBZBQ9LN4XS5S/Boudin+breads.jpeg", description: "Rustic sourdough with a hearty flavor and a crisp crust.", price: "$4.49", originalPrice: "$5.99" },
         { id: 2, title: "Green Protein Smoothie", store: "Whole Foods", image: "https://www.farmersguide.co.uk/wp-content/uploads/2023/03/shutterstock_1638551338-1024x768.jpg", description: "Energizing blend of greens, fruits, and protein for a healthy boost.", price: "$3.42", originalPrice: "$4.99" },
@@ -199,16 +193,13 @@
         { id: 12, title: "Cream Puffs", store: "Beard Papa's", image: "https://www.charlotteobserver.com/latest-news/uee32a/picture271042267/alternates/LANDSCAPE_1140/CAC9CE10-81D3-4307-BD10-AB861D53FE71.jpeg", description: "Light and airy cream puffs filled with rich vanilla custard.", price: "$2.49", originalPrice: "$3.49" }
     ];
 
-    // Show deals
     const container = document.getElementById('deals-container');
 
     deals.forEach(deal => {
         const card = document.createElement('div');
         card.className = 'deal-card';
         
-        // Add click event to go to the deal page
         card.addEventListener('click', function(event) {
-            // If the click is not on the quantity input or "Add to Cart" button, navigate to the deal page
             if (!event.target.closest('.quantity-container')) {
                 window.location.href = `deal-detail.html?id=${deal.id}`;
             }
@@ -233,7 +224,6 @@
         container.appendChild(card);
     });
 
-    // Filter deals based on search input
     document.getElementById('search-bar').addEventListener('input', function () {
         const searchTerm = this.value.toLowerCase();
         const dealCards = document.querySelectorAll('.deal-card');
@@ -247,32 +237,28 @@
     });
 
 
-    // Add to cart function
     function addToCart(id, event) {
-        event.stopPropagation(); // Prevent going to deal page when clicking the "Add to Cart" button
+        event.stopPropagation();
         const quantity = document.getElementById(`quantity-${id}`).value;
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const deal = deals.find(d => d.id === id);
-        deal.quantity = quantity; // Store quantity
+        deal.quantity = quantity;
         cart.push(deal);
         localStorage.setItem('cart', JSON.stringify(cart));
 
-        // Show "Added to Cart" message
         const msg = document.getElementById('added-to-cart-msg');
         msg.style.display = 'block';
         setTimeout(() => {
             msg.style.display = 'none';
-        }, 2000); // Hide after 2 seconds
+        }, 2000);
     }
 
-    // Initialize map
-    const map = L.map('map').setView([37.7749, -122.4194], 12); // Example: San Francisco coordinates
+    const map = L.map('map').setView([37.7749, -122.4194], 12);
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
         attribution: '&copy; OpenStreetMap contributors'
     }).addTo(map);
 
-    // Example store locations
     const storeLocations = [
         { name: "Tartine Bakery", coords: [37.7615, -122.4241] },
         { name: "Whole Foods", coords: [37.7840, -122.4075] },
