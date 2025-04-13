@@ -7,18 +7,50 @@
     
     <link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Tangerine&display=swap" rel="stylesheet">
     <style>
-        body {
-            font-family: 'Quicksand', sans-serif;
+        body, html {
             margin: 0;
+            padding: 0;
+            font-family: 'Quicksand', sans-serif; 
+        }
+        .content {
             padding: 20px;
         }
+        #header-placeholder {
+            margin: 0;
+            padding: 0;
+        }
+        h1, p {
+            margin: 0;
+        }
+        h1, p {
+        margin: 0;
+        }
+        h1 {
+        margin-bottom: 16px;
+        }
+
     </style>
 </head>
 <body>
 
-<h1>Fighting Food Waste</h1>
+<div id="header-placeholder"></div>
 
-<p>Every year, billions of pounds of food are wasted while many families struggle with hunger. At GrabNGo, we connect people to affordable deals, helping reduce waste and build a sustainable future.</p>
+
+<div class="content">
+    <h1>Fighting Food Waste: Less waste. Great food. Huge impact.</h1>
+    <p>Every year, billions of pounds of perfectly good food are thrown away, while families across the country go hungry. In fact, nearly 40% of food in the U.S. is wasted, even as 1 in 5 children face food insecurity. That waste doesn’t just hurt people — it hurts the planet. When food ends up in landfills, it releases methane, a powerful greenhouse gas that accelerates climate change.</p>
+    <p>At GrabNGo, we believe there is a better way. By connecting people to discounted surplus food from local stores and restaurants, we are cutting down waste and making meals more affordable. Our platform helps communities save money, reduce environmental harm, and support a more sustainable food system. Food should nourish people, not landfills. Together, we can change the system, one bite at a time.</p>
+
+</div>
+
+<script>
+    fetch('header.html')
+      .then(response => response.text())
+      .then(data => {
+        document.getElementById('header-placeholder').innerHTML = data;
+      });
+</script>
+
 
 </body>
 </html>

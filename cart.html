@@ -8,15 +8,82 @@
         body {
             font-family: 'Quicksand', sans-serif;
             margin: 0;
+            padding: 0px;
+            background-color: #f8f4f2;
+        }
+        .cart-item {
+            background-color: white;
+            border: 1px solid #ddd;
+            border-radius: 10px;
+            margin: 20px auto;
             padding: 20px;
+            width: 80%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        #empty-cart {
+            background-color: #ff7f50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        #empty-cart:hover {
+            background-color: #ff6333;
         }
     </style>
 </head>
 <body>
+    <div id="header-placeholder"></div>
+    
+    <script>
+        fetch('header.html')
+          .then(response => response.text())
+          .then(data => {
+            document.getElementById('header-placeholder').innerHTML = data;
+          });
+    </script>
 
 <h1>Your Cart</h1>
 
-<p>No items yet! Start browsing to add deals.</p>
+<div id="cart-items"></div>
+
+<button id="empty-cart" onclick="clearCart()">Empty Cart</button>
+
+<script>
+function displayCart() {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    let cartItemsDiv = document.getElementById('cart-items');
+
+    if (cart.length === 0) {
+        cartItemsDiv.innerHTML = "<p>Your cart is empty! Go grab some deals!</p>";
+    } else {
+        cartItemsDiv.innerHTML = "";
+
+        for (let i = 0; i < cart.length; i++) {
+            let item = cart[i];
+            let itemDiv = document.createElement('div');
+            itemDiv.className = "cart-item";
+            itemDiv.innerHTML = `<h2>${item.item}</h2>
+                                 <p>Store: ${item.store}</p>
+                                 <p>Price: ${item.price}</p>`;
+            cartItemsDiv.appendChild(itemDiv);
+        }
+    }
+}
+
+function clearCart() {
+    localStorage.removeItem('cart');
+    displayCart();
+}
+
+// When page loads
+displayCart();
+</script>
 
 </body>
 </html>
+
+

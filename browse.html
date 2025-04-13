@@ -8,26 +8,170 @@
         body {
             font-family: 'Quicksand', sans-serif;
             margin: 0;
-            padding: 20px;
-            background-color: #f2f2f2;
+            padding: 0;
+            background-color: #f8f4f2;
+        }
+        #header-placeholder {
+            margin: 0;
+            padding: 0;
+        }
+        #map {
+            height: 400px;
+            width: 100%;
+            margin-bottom: 20px;
+            border-radius: 10px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.2);
         }
         .deal {
             background-color: white;
-            border: 1px solid #ccc;
+            border: 1px solid #ddd;
             border-radius: 10px;
+            margin: 20px auto;
             padding: 20px;
-            margin-bottom: 20px;
-            width: 300px;
+            width: 80%;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+        .deal img {
+            width: 150px;
+            height: 150px;
+            object-fit: cover;
+            border-radius: 8px;
+        }
+        .deal-info {
+            flex: 1;
+            margin-left: 20px;
+        }
+        .add-to-cart {
+            background-color: #ff7f50;
+            border: none;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-size: 1em;
+            cursor: pointer;
+        }
+        .add-to-cart:hover {
+            background-color: #ff6333;
         }
     </style>
 </head>
 <body>
 
-<h1>Nearby Deals</h1>
+<!-- HEADER LOADER -->
+<div id="header-placeholder"></div>
 
-<div class="deal">Deal 1: 50% off at Grocery Store A!</div>
-<div class="deal">Deal 2: Buy 1 Get 1 Free at Bakery B!</div>
-<div class="deal">Deal 3: 30% off Organic Products at Market C!</div>
+<h1>Browse Deals</h1>
+
+<!-- Google Map -->
+<div id="map"></div>
+
+<!-- Deals will be inserted here -->
+<div id="deals-container"></div>
+
+<script>
+// Load Header
+fetch('header.html')
+  .then(response => response.text())
+  .then(data => {
+    document.getElementById('header-placeholder').innerHTML = data;
+  });
+
+// Initialize and add the map
+function initMap() {
+    const defaultLocation = { lat: 37.7749, lng: -122.4194 }; // San Francisco fallback
+
+    const map = new google.maps.Map(document.getElementById("map"), {
+        center: defaultLocation,
+        zoom: 14,
+    });
+
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                const pos = {
+                    lat: position.coords.latitude,
+                    lng: position.coords.longitude,
+                };
+                map.setCenter(pos);
+
+                findNearbyStores(pos, map);
+            },
+            () => {
+                findNearbyStores(defaultLocation, map);
+            }
+        );
+    } else {
+        findNearbyStores(defaultLocation, map);
+    }
+}
+
+function findNearbyStores(location, map) {
+    const service = new google.maps.places.PlacesService(map);
+    service.nearbySearch({
+        location: location,
+        radius: 2000,
+        type: ['store', 'bakery', 'restaurant']
+    }, (results, status) => {
+        if (status === google.maps.places.PlacesServiceStatus.OK) {
+            showDeals(results);
+            for (let i = 0; i < results.length; i++) {
+                createMarker(results[i], map);
+            }
+        }
+    });
+}
+
+function createMarker(place, map) {
+    new google.maps.Marker({
+        map,
+        position: place.geometry.location,
+        title: place.name
+    });
+}
+
+function showDeals(places) {
+    const container = document.getElementById('deals-container');
+    container.innerHTML = '';
+
+    for (let i = 0; i < Math.min(10, places.length); i++) {
+        let place = places[i];
+
+        const dealDiv = document.createElement('div');
+        dealDiv.className = 'deal';
+
+        dealDiv.innerHTML = `
+            <img src="https://via.placeholder.com/150" alt="${place.name}">
+            <div class="deal-info">
+                <h2>${place.name}</h2>
+                <p>Address: ${place.vicinity}</p>
+                <p>Special Deal: $${(Math.random() * 10 + 1).toFixed(2)}</p>
+            </div>
+            <button class="add-to-cart" onclick="addToCart('${place.name}', '${place.vicinity}', 'Special Deal')">Add to Cart</button>
+        `;
+
+        container.appendChild(dealDiv);
+    }
+}
+
+function addToCart(itemName, storeName, price) {
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    cart.push({
+        item: itemName,
+        store: storeName,
+        price: price
+    });
+    localStorage.setItem('cart', JSON.stringify(cart));
+    alert(itemName + " has been added to your cart!");
+}
+</script>
+
+<!-- Load Google Maps script -->
+<script async defer
+    src="https://maps.googleapis.com/maps/api/js?key=YOUR_API_KEY&libraries=places&callback=initMap">
+</script>
 
 </body>
 </html>

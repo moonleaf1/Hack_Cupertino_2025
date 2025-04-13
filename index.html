@@ -1,86 +1,61 @@
-<link href="https://fonts.googleapis.com/css2?family=Quicksand&family=Tangerine&display=swap" rel="stylesheet">
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>GrabNGo</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
     <style>
-        body {
-            margin: 0;
-            font-family: 'Quicksand';
+        .content {
+            position: relative; /* Allows the use of the 'top' property */
+            top: 100px; /* Moves the box 100px lower */
+            text-align: center;
+            padding: 20px; 
+            border: 2px solid #31231d;
+            border-radius: 10px; 
+            width: 50%; 
+            margin: 0 auto; 
+            background-color: #2a211f;
         }
-        header {
-            background-color: #31231d;
-            padding: 27px 30px;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            color: white;
-
-        }
-        .logo {
-            font-size: 35px;
+        h1 {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 3.5em;
             font-weight: bold;
-            font-family: "Tangerine";
-        }
-        nav a {
-            color: white;
-            text-decoration: none;
-            margin: 0 50px;
-            font-size: 20px;
-        }
-        nav a:hover {
-            text-decoration: underline;
-        }
-        .search-bar {
-            display: flex;
-            align-items: center;
-        }
-        
-      .search-bar input[type="text"] {
-            padding: 8px;
-            border: none;
-            border-radius: 4px;
-            margin-left: 20px;
-            width: 300px; /* Added width to make the search bar longer */
-            font-family: 'Quicksand';
-      }
-        .search-bar button {
-            padding: 8px 12px;
-            background-color: rgb(44, 68, 54);
-            color: white;
+            color: #fdfdfd;
+            margin-bottom: 2px;
+
+            padding: 25px 2px;
+            
+
             border: none;
             border-radius: 4px;
             margin-left: 10px;
-            cursor: pointer;
-            font-family: 'Quicksand';
             
         }
-        .search-bar button:hover {
-            background-color: #1b2820;
-            font-family: 'Quicksand';
+
+        p {
+            font-family: 'Quicksand', sans-serif;
+            font-size: 1.2em;
+            color: #ffffff;
+            margin-top: 0px;
         }
     </style>
 </head>
 <body>
 
-<header>
-    <div class="logo">
-        <a href="index.html" style="color: white; text-decoration: none;">GrabNGo</a>
-    </div>
-    
-    <nav>
-        <a href="browse.html">Browse</a>
-        <a href="ourCause.html">Our Cause</a>
-        <a href="aboutUs.html">About Us</a>
-        <a href="cart.html">Your Cart</a>
-    </nav>
-    
-    <div class="search-bar">
-        <input type="text" placeholder="Search...">
-        <button type="submit">Search</button>
-    </div>
-</header>
+    <div id="header-placeholder"></div>
 
+    <script>
+        fetch('header.html')
+        .then(response => response.text())
+        .then(data => {
+            document.getElementById('header-placeholder').innerHTML = data;
+        });
+    </script>
+    
+
+    <div class="content">
+        <h1>GrabNGo</h1>
+        <p>Less waste. Great food. Huge impact.</p>
+    </div>
 </body>
 </html>
