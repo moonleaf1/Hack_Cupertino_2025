@@ -10,7 +10,7 @@
         body, html {
             margin: 0;
             padding: 0;
-            font-family: 'Quicksand', sans-serif; 
+            font-family: 'Quicksand', sans-serif;
         }
 
         .content {
@@ -22,12 +22,28 @@
             padding: 0;
         }
 
-        h1, p {
+        p {
             margin: 0;
+            line-height: 50px;
+            font-size: 18px;
+            text-align: center;
+            margin-top: 7px;
         }
 
         h1 {
             margin-bottom: 16px;
+            text-align: center;
+
+        }
+
+        .box {
+            background-color: #f1e6d4; /* Light beige background */
+            border-radius: 15px; /* Rounded corners */
+            padding: 20px; /* Space inside the box */
+            margin: 20px auto; /* Center the box and add vertical spacing */
+            max-width: 1200px; /* Limit the width of the box */
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Add a subtle shadow */
+            border: 1px solid #ccc;
         }
 
     </style>
@@ -38,11 +54,15 @@
 
 <div class="content">
     <h1>About Us</h1>
-    <p>GrabNGo was created to make everyday shopping faster, easier, and more convenient. 
-       We believe that busy people deserve a simple, stress-free way to grab what they need and go, 
-       whether they're shopping for groceries, essentials, or treats. Our platform connects you 
-       with curated products, streamlined service, and a seamless checkout experience — 
-       all designed to save you time and make life a little easier.</p>
+    <div class="box">
+        <p>
+            GrabNGo makes everyday shopping cheaper, easier, and more convenient. 
+            People deserve a simple, stress-free way to grab what they need and go, 
+            whether they're shopping for necessities or treats. Supermarkets, bakeries, delis, and more can 
+            enter products that will go to waste if not sold, and you can purchase those items for a discounted price. In turn, 
+            stores make extra profits, you get low-cost, accessible food, and the environment heals because your choices decrease food waste!
+        </p>
+    </div>
 </div>
 
 <script>

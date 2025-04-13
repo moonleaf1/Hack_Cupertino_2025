@@ -93,6 +93,12 @@
             font-weight: bold;
             color: #333;
         }
+        .total-saved {
+            font-size: 1.2em;
+            color: #533c31;
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
     </style>
 </head>
 <body>
@@ -114,7 +120,10 @@
     <div id="cart-items"></div>
 
     <div class="cart-bottom">
-        <div class="total" id="cart-total"></div>
+        <div class="left-column">
+            <div class="total-saved" id="total-saved"></div>
+            <div class="total" id="cart-total"></div>
+        </div>
         <button id="empty-cart" onclick="emptyCart()" disabled>Empty Cart</button>
     </div>
 </div>
@@ -124,21 +133,26 @@
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const cartItemsContainer = document.getElementById('cart-items');
         const cartTotalElement = document.getElementById('cart-total');
+        const totalSavedElement = document.getElementById('total-saved');
         const emptyCartButton = document.getElementById('empty-cart');
         cartItemsContainer.innerHTML = '';
 
         if (cart.length === 0) {
             cartItemsContainer.innerHTML = '<p>Your cart is empty.</p>';
             cartTotalElement.textContent = '';
+            totalSavedElement.textContent = '';
             emptyCartButton.disabled = true;
             return;
         }
 
         let total = 0;
+        let totalSaved = 0;
 
         cart.forEach((item, index) => {
             const itemTotal = parseFloat(item.price.replace('$', '')) * item.quantity;
+            const itemOriginalTotal = parseFloat(item.originalPrice.replace('$', '')) * item.quantity;
             total += itemTotal;
+            totalSaved += itemOriginalTotal - itemTotal;
 
             const itemDiv = document.createElement('div');
             itemDiv.className = 'cart-item';
@@ -148,6 +162,7 @@
                     <h2>${item.title}</h2>
                     <p>Store: ${item.store}</p>
                     <p>Price: ${item.price}</p>
+                    <p>Original Price: <span style="text-decoration: line-through; color: red;">${item.originalPrice}</span></p>
                     <p>
                         Quantity: 
                         <input type="number" id="quantity-${index}" value="${item.quantity}" min="1" style="width: 50px; padding: 4px; font-family: 'Quicksand';">
@@ -162,9 +177,56 @@
         });
 
         cartTotalElement.textContent = `Total: $${total.toFixed(2)}`;
+        totalSavedElement.textContent = `Total Saved: $${totalSaved.toFixed(2)}`;
         emptyCartButton.disabled = false;
     }
+    function addToCart(id, event) {
+    event.stopPropagation(); // Prevent going to deal page when clicking the "Add to Cart" button
 
+    const quantityInput = document.getElementById(`quantity-${id}`);
+    const quantity = parseInt(quantityInput.value);
+
+    if (quantity < 1 || isNaN(quantity)) {
+        alert("Quantity must be at least 1.");
+        return;
+    }
+
+    let cart = JSON.parse(localStorage.getItem('cart')) || [];
+    const deal = deals.find(d => d.id === id);
+
+    if (!deal) {
+        alert("Deal not found.");
+        return;
+    }
+
+    // Check if the item is already in the cart
+    const existingItem = cart.find(item => item.id === id);
+    if (existingItem) {
+        existingItem.quantity += quantity; // Update quantity
+    } else {
+        // Add new item to the cart
+        cart.push({
+            id: deal.id,
+            title: deal.title,
+            store: deal.store,
+            image: deal.image,
+            price: deal.price,
+            originalPrice: deal.originalPrice,
+            quantity: quantity
+        });
+    }
+
+    localStorage.setItem('cart', JSON.stringify(cart));
+
+    // Show "Added to Cart" message
+    const msg = document.getElementById('added-to-cart-msg');
+    if (msg) {
+        msg.style.display = 'block';
+        setTimeout(() => {
+            msg.style.display = 'none';
+        }, 2000); // Hide after 2 seconds
+    }
+}
     function updateQuantity(index) {
         let cart = JSON.parse(localStorage.getItem('cart')) || [];
         const quantityInput = document.getElementById(`quantity-${index}`);
